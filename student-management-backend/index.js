@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import Student from './studentModel.js';
 
 const app = express();
 
@@ -16,4 +17,12 @@ mongoose.connect(mongoUrl, {
     console.log('Connected to MongoDB')
 })
 
-app.post('/students')
+app.post('/students',(req,res) => {
+    const studentData = req.body
+    const student = new Student(studentData)
+    student.save().then(()=> {
+        res.send("Student added")
+    }).catch((error)=>{
+        res.send(error)
+    })
+})
