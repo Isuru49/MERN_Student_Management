@@ -2,6 +2,7 @@ import './App.css';
 import { useState } from 'react';
 import { FaEdit, FaPlus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import axios from 'axios';
 
 function App() {
   const [students, setStudents] = useState([
@@ -28,7 +29,16 @@ function App() {
   const handleAddStudent = () => {
     if (newStudent.name && newStudent.date && newStudent.reg) {
       setStudents([...students, newStudent]);
+
+      axios.post("http://localhost:5000/students",newStudent).
+      then((res)=>{
+        alert("Student Added")
+      }).catch((err)=>{
+        alert(err)
+      })
       setNewStudent({ name: '', date: '', reg: '' });
+
+      
       setShowModal(false);
     } else {
       alert('Please fill in all fields');
