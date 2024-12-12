@@ -32,6 +32,22 @@ app.post('/students',(req,res) => {
     })
 })
 
+app.get("/students",(req,res)=>{
+    Student.find().then((students)=>{
+        res.send(students)
+    })
+})
+
+app.delete('/students/:id',(req,res)=>{
+    const reg = req.params.id
+    const student = Student.findOneAndDelete({reg}).then(()=>{
+        res.send("Deleted")
+    }).catch((error)=>{
+        res.send(error)
+    })
+})
+
+
 app.listen(5000 ,()=>{
     console.log("Server is running")
 })

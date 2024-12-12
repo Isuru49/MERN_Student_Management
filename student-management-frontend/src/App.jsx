@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaEdit, FaPlus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from 'axios';
@@ -22,6 +22,16 @@ function App() {
       reg: "20IT0466"
     },
   ]);
+  const [studentLoaded, setStudentsLoaded]= useState(false)
+
+  useEffect(()=>{
+    if(!studentLoaded){
+      axios.get("http://localhost:5000/students").then((res)=>{
+        setStudents(res.data)
+        setStudentsLoaded(true)
+      });
+    }
+  },[students,studentLoaded])
 
   const [showModal, setShowModal] = useState(false);
   const [newStudent, setNewStudent] = useState({ name: '', date: '', reg: '' });
@@ -131,7 +141,15 @@ function App() {
                 <button className="text-blue-500 hover:text-blue-700">
                   <FaEdit />
                 </button>
-                <button className="text-red-500 hover:text-red-700">
+                <button className="text-red-500 hover:text-red-700" onClick={()=>{
+                  if(!confirm("Delete?")) return
+
+                  axios.delete(`http://localhost:5000/students/${std.reg}`).then(
+                    (res)=>{
+                      setStudentsLoaded(false)
+                    }
+                  )
+                }}>
                   <MdDelete />
                 </button>
               </div>
