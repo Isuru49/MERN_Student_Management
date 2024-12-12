@@ -47,6 +47,13 @@ app.delete('/students/:id',(req,res)=>{
     })
 })
 
+app.put('/students/:id',(req,res)=>{
+    const reg = req.params.id
+    Student.findOneAndUpdate({reg},req.body).then(()=>{
+        res.send("updated")
+    })
+})
+
 
 app.listen(5000 ,()=>{
     console.log("Server is running")
